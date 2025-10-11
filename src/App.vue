@@ -1,18 +1,25 @@
 <template>
   <div>
-    <button @click.once="onClick">
-      Enviar
-    </button>
-    <br><br>
+    <h1>{{ fullName }}</h1> <br>
 
-    <div @mouseover.once="onMouseOver" @mouseout.once="onMouseOut">
-      Passe o mouse aqui
+    <h2>Todos em aberto</h2>
+    <div v-for="todo in unCompletedTodos" :key="todo.id">
+      <p>
+        <strong>{{ todo.title }}</strong>
+      </p>
     </div>
-
-    <br><br>
-    <form action="https://google.com" @submit.prevent="onSubmit">
-      <input type="text" @keyup.enter="onKeyUp" />
-    </form>
+    <br>
+    <h2>Todos concluídos</h2>
+    <div v-for="todo in completedTodos" :key="todo.id">
+      <p>
+        <strong>{{ todo.title }}</strong>
+      </p>
+    </div>
+    <br><br><br>
+    <h2>Todos</h2>
+    <div v-for="todo in todos" :key="todo.id">
+      <input type="checkbox" v-model="todo.completed"/>
+    </div>
   </div>
 </template>
 
@@ -23,30 +30,61 @@ export default {
   name: 'App',
   data: () => {
     return {
-      var: 'teste'
+      user: {
+        firstName: 'John',
+        lastName: 'Snow'
+      },
+      todos: [
+        {
+          "userId": 1,
+          "id": 1,
+          "title": "delectus aut autem",
+          "completed": false
+        },
+        {
+          "userId": 1,
+          "id": 2,
+          "title": "quis ut nam facilis et officia qui",
+          "completed": false
+        },
+        {
+          "userId": 1,
+          "id": 3,
+          "title": "fugiat veniam minus",
+          "completed": false
+        },
+        {
+          "userId": 1,
+          "id": 4,
+          "title": "et porro tempora",
+          "completed": true
+        },
+        {
+          "userId": 1,
+          "id": 5,
+          "title": "laboriosam mollitia et enim quasi adipisci quia provident illum",
+          "completed": false
+        }
+      ]
     }
   },
-  methods: {
-    onClick($evt) {
-      console.log('Clicou', $evt)
+
+  computed: {
+    fullName() {
+      return `${this.user.firstName} ${this.user.lastName}`
     },
 
-    onMouseOver($evt) {
-      console.log('Passou o mouse', $evt)
+    unCompletedTodos() {
+      return this.todos.filter(todo => !todo.completed)
     },
 
-    onMouseOut($evt) {
-      console.log('Tirou o mouse', $evt)
-    },
-
-    onSubmit($evt) {
-      console.log('Enviou o form', $evt)
-    },
-
-    onKeyUp($evt) {
-      console.log('Soltou a tecla', $evt)
+    completedTodos() {
+      return this.todos.filter(todo => todo.completed)
     }
-  }
+  },
+
+  methods: {
+  },
 }
 </script>
 
